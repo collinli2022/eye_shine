@@ -3,6 +3,7 @@ Shine stuff into one's eye...
 
 # Pi details
 Prob should not share with internet but...
+
     Username: pi
     Password: *myName*
     
