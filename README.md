@@ -6,6 +6,10 @@ Prob should not share with internet but...
 
     Username: pi
     Password: *myName*
+
+IN ORDER FOR THIS TO WORK
+Needs a power source of 5.1volts with 3 amps
+Need that much power for the servos
     
 
 # Other faster ideas
