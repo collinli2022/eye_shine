@@ -15,48 +15,48 @@ class servoControl:
         return dc
 
     def angle(self, deg):
-        self.__angle = deg
-        self.__servo.ChangeDutyCycle(self.cal(deg))
-        time.sleep(0.5)
+        self.__angle = int(deg)
+        self.__servo.ChangeDutyCycle(self.cal(int(deg)))
+        #time.sleep(0.25)
 
 
-# just for testing servo with slider
-# One slider control all servos cuz I don't know how to make 2 sliders together SAD!
-from tkinter import *
+if __name__ == "__main__" :
+    # just for testing servo with slider
+    # One slider control all servos cuz I don't know how to make 2 sliders together SAD!
+    from tkinter import *
 
 
-pins = [37, 38] # put the pins in here BASED ON THE BOARD
+    pins = [37, 38] # put the pins in here BASED ON THE BOARD
 
-bam = [] # TO store the servoControl classes for the pins
+    bam = [] # TO store the servoControl classes for the pins
 
-# JUST REALIZED
-# This only goes from 0-100... not 0 - 180 bruh mmt 
-# wait... fixed it with simple algebra by scaling 100 to 180 mmt
+    # JUST REALIZED
+    # This only goes from 0-100... not 0 - 180 bruh mmt 
+    # wait... fixed it with simple algebra by scaling 100 to 180 mmt
 
-for i in pins:
-    bam.append(servoControl(i))
+    for i in pins:
+        bam.append(servoControl(i))
 
-def sel():
-    for i in bam:
-        a = int(var.get())/100*180 # debugging purposes
-        print(a)
-        selection = "Angle = " + str(a)
-        i.angle(int(a))
+    def sel():
+        for i in bam:
+            a = int(var.get())/100*180 # debugging purposes
+            print(a)
+            selection = "Angle = " + str(a)
+            i.angle(int(a))
 
-    label.config(text = selection)
+        label.config(text = selection)
 
-root = Tk()
-var = DoubleVar()
-scale = Scale( root, variable = var )
-scale.pack(anchor = CENTER)
+    root = Tk()
+    var = DoubleVar()
+    scale = Scale( root, variable = var )
+    scale.pack(anchor = CENTER)
 
-button = Button(root, text = "Enter", command = sel)
-button.pack(anchor = CENTER)
+    button = Button(root, text = "Enter", command = sel)
+    button.pack(anchor = CENTER)
 
-label = Label(root)
-label.pack()
+    label = Label(root)
+    label.pack()
 
-root.mainloop()
+    root.mainloop()
 
-
-
+    
