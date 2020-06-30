@@ -13,7 +13,7 @@ Need that much power for the servos
 
 # Order
 Camera at middle (white) line at 6.5 inches up
-Servo is to the right (me) or left of camera pointing at me
+Servo is to the right (me) or left of camera pointing at me 2 inches from the midline
 Based on my camera and servo
 
 	my Right 124 deg (bottom servo); x-axis : 40 pixel
