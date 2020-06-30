@@ -26,7 +26,7 @@ if __name__ == "__main__" :
     from tkinter import *
 
 
-    pins = [37, 38] # put the pins in here BASED ON THE BOARD
+    pins = [38] # put the pins in here BASED ON THE BOARD
 
     bam = [] # TO store the servoControl classes for the pins
 

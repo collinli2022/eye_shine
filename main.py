@@ -8,7 +8,7 @@ pins = [38, 37] # put the pins in here BASED ON THE BOARD
 source = 0
 showDetails = True
 
-def detectFaceOpenCVHaar(faceCascade, frame, inHeight=200, inWidth=0):
+def detectFaceOpenCVHaar(faceCascade, frame, inHeight=250, inWidth=0):
     frameOpenCVHaar = frame.copy()
     frameHeight = frameOpenCVHaar.shape[0]
     frameWidth = frameOpenCVHaar.shape[1]
@@ -86,14 +86,23 @@ def manipulateServo(boxes, servos):
     x = x1 + w/2.8
     y = y1 + h/2.8
 
-    print(x, middleX)
+    '''
 
+    my Right 124 deg (bottom servo); x-axis : 40 pixel
+    my Left 75 deg (bottom servo); x-axis : 560 pixel
+    height 117 deg (top servo); y-axis : 100
+
+    '''
+
+    servos[1].angle(117)
     if(x < middleX):
         print("My Right")
-        servos[0].angle(45*3)
+        servos[0].angle(124)
     else:
         print("My Left")
-        servos[0].angle(45)
+        servos[0].angle(75)
+
+    return [x, y]
 
     '''
     aa = (int(x1),int(y1))
@@ -125,9 +134,10 @@ if __name__ == "__main__" :
 
     cap = cv2.VideoCapture(source)
     hasFrame, frame = cap.read()
-
+    
     if(showDetails): # show frame + other stuff
 
+        vid_writer = cv2.VideoWriter('output-dnn-{}.avi'.format(str(source).split(".")[0]),cv2.VideoWriter_fourcc('M','J','P','G'), 15, (frame.shape[1],frame.shape[0]))
 
         frame_count = 0
         tt_opencvHaar = 0
@@ -141,23 +151,28 @@ if __name__ == "__main__" :
             t = time.time()
             outOpencvHaar, bboxes = detectFaceOpenCVHaar(faceCascade, frame)
 
+            x = 0
+            y = 0
+
             if(len(bboxes) != 0):
                 bboxes = bboxes[0]
-                manipulateServo(bboxes, bam)
+                x, y = manipulateServo(bboxes, bam)
 
             tt_opencvHaar += time.time() - t
             fpsOpencvHaar = frame_count / tt_opencvHaar
 
-            label = "OpenCV Haar ; FPS : {:.2f}".format(fpsOpencvHaar)
-            cv2.putText(outOpencvHaar, label, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.4, (0, 0, 255), 3, cv2.LINE_AA)
+            label = str(x) + " " + str(y) + " ; FPS : {:.2f}".format(fpsOpencvHaar)
+            cv2.putText(outOpencvHaar, label, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.4, (0, 0, 255), 2, cv2.LINE_AA)
 
             cv2.imshow("Face Detection Comparison", outOpencvHaar)
 
+            vid_writer.write(outOpencvHaar)
             if frame_count == 1:
                 tt_opencvHaar = 0
 
             k = cv2.waitKey(10)
             if k == 27:
+                vid_writer.release()
                 break
 
 
@@ -196,3 +211,4 @@ if __name__ == "__main__" :
                 break
     
     cv2.destroyAllWindows()
+    
